@@ -1,3 +1,4 @@
+import { SignInButton } from '../SignInButton'
 import styles from './Header.module.scss'
 
 export function Header(): React.ReactElement {
@@ -9,6 +10,7 @@ export function Header(): React.ReactElement {
                 <a className={styles.active} href="">Home</a>
                 <a href="">Posts</a>
             </nav>
+            <SignInButton />
         </div>
     </header>
   )
