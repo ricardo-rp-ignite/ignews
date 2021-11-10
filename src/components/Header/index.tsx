@@ -1,10 +1,6 @@
 import styles from './Header.module.scss'
 
-type HeaderProps = {
-  
-}
-
-export function Header(props: HeaderProps): React.ReactElement {
+export function Header(): React.ReactElement {
   return (
     <header className={styles.headerContainer}>
         <div className={styles.headerContent}>
