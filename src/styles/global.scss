@@ -19,6 +19,10 @@
     --header-height: 5rem;
 }
 
+html {
+    transition: font-size 0.4s;
+}
+
 @media (max-width: 1080px) {
     html {
         font-size: 93.75%;
