@@ -16,12 +16,15 @@ export default NextAuth({
   callbacks: {
     async signIn(user) {
       const { email } = user
-
       try {
+        // Check if user exists before creating in fauna
+
         await fauna.query(
-          q.Create(q.Collection('users'), {
-            data: { email },
-          })
+          q.If(
+            q.Not(q.Exists(userByEmail(email))),
+            q.Create(q.Collection('users'), { data: { email } }),
+            q.Get(userByEmail(email))
+          )
         )
 
         return true
@@ -33,3 +36,6 @@ export default NextAuth({
     },
   },
 })
+
+const userByEmail = (email: string) =>
+  q.Match(q.Index('user_by_email'), q.Casefold(email))
