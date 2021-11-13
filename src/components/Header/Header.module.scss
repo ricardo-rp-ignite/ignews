@@ -22,7 +22,7 @@
             padding: 0 0.5rem;
             height: var(--header-height);
             line-height: var(--header-height);
-            color : var(--gray-300);
+            color: var(--gray-300);
 
             transition: color 0.2s;
 
@@ -40,15 +40,14 @@
             }
 
             &.active::after {
-                content: '';
-                height: 3px; 
+                content: "";
+                height: 3px;
                 border-radius: 3px 3px 0 0;
                 width: 100%;
-                position: absolute; 
+                position: absolute;
                 bottom: 0;
                 left: 0;
                 background: var(--yellow-500);
-
             }
         }
     }

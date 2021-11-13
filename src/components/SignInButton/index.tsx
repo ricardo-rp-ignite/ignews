@@ -4,26 +4,18 @@ import { FiX } from 'react-icons/fi'
 import styles from './SignInButton.module.scss'
 
 export function SignInButton(): React.ReactElement {
-    const isUserLoggedIn = true
+  const isUserLoggedIn = true
 
-
-    return isUserLoggedIn ? (
-        <button
-            type='button'
-            className={styles.signInButton}
-        >
-            <FaGithub color='#04d361' />
-            Ricardo Romero
-            <FiX color='#737380' />
-
-        </button>
-    ) : (
-        <button
-            type='button'
-            className={styles.signInButton}
-        >
-            <FaGithub color='#eba417' />
-            Sign in with Github
-        </button>
-    );
+  return isUserLoggedIn ? (
+    <button type="button" className={styles.signInButton}>
+      <FaGithub color="#04d361" />
+      Ricardo Romero
+      <FiX color="#737380" />
+    </button>
+  ) : (
+    <button type="button" className={styles.signInButton}>
+      <FaGithub color="#eba417" />
+      Sign in with Github
+    </button>
+  )
 }

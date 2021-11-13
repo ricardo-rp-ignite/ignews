@@ -1,17 +1,16 @@
 import Head from 'next/head'
 
 export default function Home() {
-
   return (
     <>
       <Head>
-        <title>Inicio | ig.news</title>
+        <title>Home | ig.news</title>
       </Head>
 
-      <h1>
-
-        hello <span> world </span>
-      </h1>
+      <main>
+        <section></section>
+        <img src="/images/avatar.svg" alt="Girl coding" />
+      </main>
     </>
   )
 }
