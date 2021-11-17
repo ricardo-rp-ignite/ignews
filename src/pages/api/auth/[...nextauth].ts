@@ -4,6 +4,7 @@ import Providers from 'next-auth/providers'
 import { query as q } from 'faunadb'
 
 import { fauna } from '../../../services/fauna'
+import { userByEmail } from '../../../utils/faunaQl'
 
 export default NextAuth({
   providers: [
@@ -18,7 +19,6 @@ export default NextAuth({
       const { email } = user
       try {
         // Check if user exists before creating in fauna
-
         await fauna.query(
           q.If(
             q.Not(q.Exists(userByEmail(email))),
@@ -30,12 +30,8 @@ export default NextAuth({
         return true
       } catch (e) {
         console.error(e)
-
         return false
       }
     },
   },
 })
-
-const userByEmail = (email: string) =>
-  q.Match(q.Index('user_by_email'), q.Casefold(email))

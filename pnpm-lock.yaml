@@ -1,9 +1,11 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@stripe/stripe-js': ^1.21.1
   '@types/node': ^16.11.7
   '@types/react': ^17.0.34
   '@typescript-eslint/eslint-plugin': ^5.3.1
+  axios: ^0.24.0
   eslint: '7'
   eslint-config-next: 12.0.3
   eslint-config-prettier: ^8.3.0
@@ -20,6 +22,8 @@ specifiers:
   typescript: ^4.4.4
 
 dependencies:
+  '@stripe/stripe-js': 1.21.1
+  axios: 0.24.0
   faunadb: 4.4.1
   next: 12.0.3_0c41f19aae22112e9f1896e888ec7296
   next-auth: 3.29.0_react-dom@17.0.2+react@17.0.2
@@ -387,6 +391,10 @@ packages:
     resolution: {integrity: sha512-O3uyB/JbkAEMZaP3YqyHH7TMnex7tWyCbCI4EfJdOCoN6HIhqdJBWTM6aCCiWQ/5f5wxjgU735QAIpJbjDvmzg==}
     dev: false
 
+  /@stripe/stripe-js/1.21.1:
+    resolution: {integrity: sha512-/HhRol0Bia/6L7JstXUOpg3m0U3nBW8c2tvaBE6QdonN+OMusYT9AIqCMR/PyzoF3ROifFJ2kbWT7xQjbKN3tw==}
+    dev: false
+
   /@types/json-schema/7.0.9:
     resolution: {integrity: sha512-qcUXuemtEu+E5wZSJHNxUXeCZhAfXKQ41D+duX+VYPde7xyEVZci+/oXKJL13tnRs9lR2pr4fod59GT6/X1/yQ==}
     dev: true
@@ -746,6 +754,14 @@ packages:
     resolution: {integrity: sha512-WKTW1+xAzhMS5dJsxWkliixlO/PqC4VhmO9T4juNYcaTg9jzWiJsou6m5pxWYGfigWbwzJWeFY6z47a+4neRXA==}
     engines: {node: '>=4'}
     dev: true
+
+  /axios/0.24.0:
+    resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
+    dependencies:
+      follow-redirects: 1.14.5
+    transitivePeerDependencies:
+      - debug
+    dev: false
 
   /axobject-query/2.2.0:
     resolution: {integrity: sha512-Td525n+iPOOyUQIeBfcASuG6uJsDOITl7Mds5gFyerkWiX7qhUTdYUBlSgNMyVqtSJqwpt1kXGLdUt6SykLMRA==}
@@ -1739,6 +1755,16 @@ packages:
   /fn-annotate/1.2.0:
     resolution: {integrity: sha1-KNoAARfephhC/mHzU/Qc9Mk6en4=}
     engines: {node: '>=0.10.0'}
+    dev: false
+
+  /follow-redirects/1.14.5:
+    resolution: {integrity: sha512-wtphSXy7d4/OR+MvIFbCVBDzZ5520qV8XfPklSN5QtxuMUJZ+b0Wnst1e1lCDocfzuCkHqj8k0FpZqO+UIaKNA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
     dev: false
 
   /foreach/2.0.5:

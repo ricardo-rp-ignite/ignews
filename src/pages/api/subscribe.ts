@@ -1,9 +1,23 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+
+import { query as q } from 'faunadb'
 import { getSession } from 'next-auth/client'
 
+import { fauna } from '../../services/fauna'
 import { stripe } from '../../services/stripe'
+import { userByEmail } from '../../utils/faunaQl'
+
+type User = {
+  ref: {
+    id: string
+  }
+  data: {
+    stripe_customer_id: string
+  }
+}
 
 const subscribe = async (req: NextApiRequest, res: NextApiResponse) => {
+  // Only allow POST requests
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST'])
     return res.status(405).end(`Method ${req.method} Not Allowed`)
@@ -12,14 +26,32 @@ const subscribe = async (req: NextApiRequest, res: NextApiResponse) => {
   // Get user session from cookie
   const session = await getSession({ req })
 
-  // Create customer in stripe
-  const stripeCustomer = await stripe.customers.create({
-    email: session.user.email,
-  })
+  // Get user from faunaDb
+  const user = await fauna.query<User>(q.Get(userByEmail(session.user.email)))
+  let customerId = user.data.stripe_customer_id
+
+  // Create user if it doesn't exist
+  if (!customerId) {
+    // Create customer in stripe
+    const stripeCustomer = await stripe.customers.create({
+      email: session.user.email,
+    })
+
+    // Create user in faunaDb
+    await fauna.query(
+      q.Update(q.Ref(q.Collection('users'), user.ref.id), {
+        data: {
+          stripe_customer_id: stripeCustomer.id,
+        },
+      })
+    )
+
+    customerId = stripeCustomer.id
+  }
 
   // Create stripe checkout session
   const stripeCheckoutSession = await stripe.checkout.sessions.create({
-    customer: stripeCustomer.id,
+    customer: customerId,
     payment_method_types: ['card'],
     billing_address_collection: 'required',
     line_items: [
