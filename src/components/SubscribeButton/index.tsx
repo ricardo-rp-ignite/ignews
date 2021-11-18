@@ -12,12 +12,14 @@ export function SubscribeButton() {
     if (!session) return signIn('github')
 
     try {
-      // Create checkout session
-      const response = api.post<{ sessionId: string }>('/subscribe')
-      const stripePromise = getStripeJs()
+      const [{ data }, stripeJs] = await Promise.all([
+        // Create checkout session and get sessionId
+        api.post<{ sessionId: string }>('/subscribe'),
+        // Load stripeJs
+        getStripeJs(),
+      ])
 
-      const [{ data }, stripeJs] = await Promise.all([response, stripePromise])
-
+      // Open checkout
       stripeJs.redirectToCheckout(data)
     } catch (error) {
       alert(error.message)
