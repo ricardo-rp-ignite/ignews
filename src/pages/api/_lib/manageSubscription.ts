@@ -2,7 +2,7 @@ import { query as q } from 'faunadb'
 
 import { fauna } from '../../../services/fauna'
 import { stripe } from '../../../services/stripe'
-import { userByStripeCustomerId } from '../../../utils/faunaQl'
+import { userByStripeCustomerId } from './faunaQl'
 
 export async function saveSubscription(
   subscriptionId: string,

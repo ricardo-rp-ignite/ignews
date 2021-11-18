@@ -5,7 +5,7 @@ import { getSession } from 'next-auth/client'
 
 import { fauna } from '../../services/fauna'
 import { stripe } from '../../services/stripe'
-import { userByEmail } from '../../utils/faunaQl'
+import { userByEmail } from './_lib/faunaQl'
 
 type User = {
   ref: {

@@ -4,7 +4,7 @@ import Providers from 'next-auth/providers'
 import { query as q } from 'faunadb'
 
 import { fauna } from '../../../services/fauna'
-import { userByEmail } from '../../../utils/faunaQl'
+import { userByEmail } from '../_lib/faunaQl'
 
 export default NextAuth({
   providers: [
