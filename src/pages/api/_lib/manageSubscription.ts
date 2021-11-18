@@ -1,30 +1,64 @@
 import { query as q } from 'faunadb'
+import Stripe from 'stripe'
 
 import { fauna } from './services/fauna'
 import { stripe } from './services/stripe'
 import { userByStripeCustomerId } from './faunaQl'
 
+// Describes the data that is stored in the subscription collection
+type FaunaSubscriptionData = {
+  id: string
+  userId: object
+  status: Stripe.Subscription.Status
+  price_id: string
+}
+
 export async function saveSubscription(
-  subscriptionId: string,
-  customerId: string
+  stripeSubscriptionId: string,
+  stripeCustomerId: string,
+  isNewSubscription = false
 ) {
   // Get user ref from faunaDb by stripe customer id
   const userRef = await fauna.query(
-    q.Select('ref', q.Get(userByStripeCustomerId(customerId)))
+    q.Select('ref', q.Get(userByStripeCustomerId(stripeCustomerId)))
   )
 
   // Get subscription data from stripe
-  const subscription = await stripe.subscriptions.retrieve(subscriptionId)
+  const stripeSubscription = await stripe.subscriptions.retrieve(
+    stripeSubscriptionId
+  )
 
-  // Save user subscription data to faunaDb
-  await fauna.query(
-    q.Create(q.Collection('subscriptions'), {
-      data: {
-        id: subscription.id,
-        userId: userRef,
-        status: subscription.status,
-        price_id: subscription.items.data[0].price.id,
-      },
-    })
+  const subscriptionData: FaunaSubscriptionData = {
+    id: stripeSubscription.id,
+    userId: userRef,
+    status: stripeSubscription.status,
+    price_id: stripeSubscription.items.data[0].price.id,
+  }
+
+  if (isNewSubscription) {
+    await createSubscription(subscriptionData)
+  } else {
+    await replaceSubscriptionById(subscriptionData, stripeSubscriptionId)
+  }
+}
+
+async function createSubscription(subscriptionData: FaunaSubscriptionData) {
+  return await fauna.query(
+    q.Create(q.Collection('subscriptions'), { data: subscriptionData })
+  )
+}
+
+async function replaceSubscriptionById(
+  subscriptionData: FaunaSubscriptionData,
+  subscriptionId: string
+) {
+  return await fauna.query(
+    q.Replace(
+      q.Select(
+        'ref',
+        q.Get(q.Match(q.Index('subscription_by_id'), subscriptionId))
+      ),
+      { data: subscriptionData }
+    )
   )
 }

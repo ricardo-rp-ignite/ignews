@@ -6,7 +6,6 @@ import Stripe from 'stripe'
 import { stripe } from './_lib/services/stripe'
 import { saveSubscription } from './_lib/manageSubscription'
 
-/* TODO: Bootcamp didn't go into streams. Must study further */
 async function buffer(readable: Readable) {
   const chunks = []
 
@@ -20,7 +19,17 @@ async function buffer(readable: Readable) {
 // This allows us to consume the webhooks body as a stream
 export const config = { api: { bodyParser: false } }
 
-const relevantEvents = new Set(['checkout.session.completed'])
+const relevantEvents = new Set([
+  'checkout.session.completed',
+  'customer.subscription.updated',
+  'customer.subscription.deleted',
+  /* For now, the following event won't be handled as the only way to create a
+   * subscription is through the website->Stripe Checkout flow.
+   * If we decide to implement other subscription methods, the checkout event
+   * handler must be updated not to duplicate the subscription on the database.
+   */
+  // 'customer.subscription.created',
+])
 
 async function webHooks(req: NextApiRequest, res: NextApiResponse) {
   // Only allow POST requests
@@ -30,11 +39,9 @@ async function webHooks(req: NextApiRequest, res: NextApiResponse) {
   }
 
   const buf = await buffer(req)
-
   const signature = req.headers['stripe-signature']
 
   let event: Stripe.Event
-
   try {
     event = stripe.webhooks.constructEvent(
       buf,
@@ -50,10 +57,24 @@ async function webHooks(req: NextApiRequest, res: NextApiResponse) {
       switch (event.type) {
         case 'checkout.session.completed':
           // Type assertion is safe here because we have checked the event type
-          const checkoutSession = event.data.object as Stripe.Checkout.Session
+          const stripeCheckoutSession = event.data
+            .object as Stripe.Checkout.Session
+
           await saveSubscription(
-            checkoutSession.subscription.toString(),
-            checkoutSession.customer.toString()
+            stripeCheckoutSession.subscription.toString(),
+            stripeCheckoutSession.customer.toString(),
+            true
+          )
+
+          break
+        case 'customer.subscription.updated':
+        case 'customer.subscription.deleted':
+          // Type assertion is safe here because we have checked the event type
+          const stripeSubscription = event.data.object as Stripe.Subscription
+
+          await saveSubscription(
+            stripeSubscription.id,
+            stripeSubscription.customer.toString()
           )
 
           break
