@@ -8,12 +8,8 @@ import { stripe } from './_lib/services/stripe'
 import { userByEmail } from './_lib/faunaQl'
 
 type User = {
-  ref: {
-    id: string
-  }
-  data: {
-    stripe_customer_id: string
-  }
+  ref: { id: string }
+  data: { stripe_customer_id: string }
 }
 
 const subscribe = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -28,30 +24,28 @@ const subscribe = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Get user from faunaDb
   const user = await fauna.query<User>(q.Get(userByEmail(session.user.email)))
-  let customerId = user.data.stripe_customer_id
+  let stripeCustomerId = user.data.stripe_customer_id
 
-  // Create user if it doesn't exist
-  if (!customerId) {
+  // Create stripe customer if it doesn't exist
+  if (!stripeCustomerId) {
     // Create customer in stripe
     const stripeCustomer = await stripe.customers.create({
       email: session.user.email,
     })
 
-    // Create user in faunaDb
+    // Add stripe customer id to faunaDb user
     await fauna.query(
       q.Update(q.Ref(q.Collection('users'), user.ref.id), {
-        data: {
-          stripe_customer_id: stripeCustomer.id,
-        },
+        data: { stripe_customer_id: stripeCustomer.id },
       })
     )
 
-    customerId = stripeCustomer.id
+    stripeCustomerId = stripeCustomer.id
   }
 
   // Create stripe checkout session
   const stripeCheckoutSession = await stripe.checkout.sessions.create({
-    customer: customerId,
+    customer: stripeCustomerId,
     payment_method_types: ['card'],
     billing_address_collection: 'required',
     line_items: [
