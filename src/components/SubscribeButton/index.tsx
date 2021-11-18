@@ -13,11 +13,12 @@ export function SubscribeButton() {
 
     try {
       // Create checkout session
-      const response = await api.post('/subscribe')
-      const { sessionId } = response.data
+      const response = api.post<{ sessionId: string }>('/subscribe')
+      const stripePromise = getStripeJs()
 
-      const stripeJs = await getStripeJs()
-      stripeJs.redirectToCheckout({ sessionId })
+      const [{ data }, stripeJs] = await Promise.all([response, stripePromise])
+
+      stripeJs.redirectToCheckout(data)
     } catch (error) {
       alert(error.message)
     }
