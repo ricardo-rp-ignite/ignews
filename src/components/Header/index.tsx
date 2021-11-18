@@ -7,7 +7,7 @@ export function Header(): React.ReactElement {
       <div className={styles.headerContent}>
         <img src="/images/logo.svg" alt="if.news" />
         <nav>
-          <a className={styles.active} href="">
+          <a className={styles.active} href="http://localhost:3000">
             Home
           </a>
           <a href="">Posts</a>
