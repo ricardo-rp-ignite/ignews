@@ -4,7 +4,7 @@ import { query as q } from 'faunadb'
 import { getSession } from 'next-auth/client'
 
 import { fauna } from './_lib/services/fauna'
-import { stripe } from '../../services/stripe'
+import { stripe } from './_lib/services/stripe'
 import { userByEmail } from './_lib/faunaQl'
 
 type User = {

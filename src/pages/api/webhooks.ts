@@ -3,7 +3,7 @@ import { Readable } from 'stream'
 
 import Stripe from 'stripe'
 
-import { stripe } from '../../services/stripe'
+import { stripe } from './_lib/services/stripe'
 import { saveSubscription } from './_lib/manageSubscription'
 
 /* TODO: Bootcamp didn't go into streams. Must study further */

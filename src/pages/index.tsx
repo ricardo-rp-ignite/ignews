@@ -4,7 +4,7 @@ import { GetStaticProps } from 'next'
 import { SubscribeButton } from '../components/SubscribeButton'
 
 import styles from './Home.module.scss'
-import { stripe } from '../services/stripe'
+import { stripe } from './api/_lib/services/stripe'
 
 type HomeProps = {
   product: {
