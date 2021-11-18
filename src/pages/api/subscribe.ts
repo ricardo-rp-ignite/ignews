@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { query as q } from 'faunadb'
 import { getSession } from 'next-auth/client'
 
-import { fauna } from '../../services/fauna'
+import { fauna } from './_lib/services/fauna'
 import { stripe } from '../../services/stripe'
 import { userByEmail } from './_lib/faunaQl'
 
