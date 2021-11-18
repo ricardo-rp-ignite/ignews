@@ -4,6 +4,7 @@ import { Readable } from 'stream'
 import Stripe from 'stripe'
 
 import { stripe } from '../../services/stripe'
+import { saveSubscription } from './_lib/manageSubscription'
 
 /* TODO: Bootcamp didn't go into streams. Must study further */
 async function buffer(readable: Readable) {
@@ -45,7 +46,28 @@ async function webHooks(req: NextApiRequest, res: NextApiResponse) {
   }
 
   if (relevantEvents.has(event.type)) {
-    console.log('Evento recebido', event)
+    try {
+      switch (event.type) {
+        case 'checkout.session.completed':
+          // Type assertion is safe here because we have checked the event type
+          const checkoutSession = event.data.object as Stripe.Checkout.Session
+          await saveSubscription(
+            checkoutSession.subscription.toString(),
+            checkoutSession.customer.toString()
+          )
+
+          break
+        default:
+          throw new Error(`Unhandled event type: ${event.type}`)
+      }
+    } catch (err) {
+      // Here you would capture any errors and send them to your error
+      // reporting service. (Ex: sentry, bugsnag, etc.).
+
+      return res.json({
+        error: 'Webhook handler failed',
+      })
+    }
   }
 
   res.status(200).json({ received: true })
