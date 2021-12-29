@@ -4,6 +4,7 @@ specifiers:
   '@prismicio/client': ^5.1.0
   '@stripe/stripe-js': ^1.21.1
   '@types/node': ^16.11.7
+  '@types/prismic-dom': ^2.1.1
   '@types/react': ^17.0.34
   '@typescript-eslint/eslint-plugin': ^5.3.1
   axios: ^0.24.0
@@ -15,6 +16,7 @@ specifiers:
   next: 12.0.3
   next-auth: ^3.29.0
   prettier: ^2.4.1
+  prismic-dom: ^2.2.6
   react: 17.0.2
   react-dom: 17.0.2
   react-icons: ^4.3.1
@@ -30,6 +32,7 @@ dependencies:
   next: 12.0.3_0c41f19aae22112e9f1896e888ec7296
   next-auth: 3.29.0_react-dom@17.0.2+react@17.0.2
   prettier: 2.4.1
+  prismic-dom: 2.2.6
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-icons: 4.3.1_react@17.0.2
@@ -38,6 +41,7 @@ dependencies:
 
 devDependencies:
   '@types/node': 16.11.7
+  '@types/prismic-dom': 2.1.1
   '@types/react': 17.0.34
   '@typescript-eslint/eslint-plugin': 5.3.1_eslint@7.32.0+typescript@4.4.4
   eslint: 7.32.0
@@ -392,6 +396,14 @@ packages:
       cross-fetch: 3.1.4
     dev: false
 
+  /@prismicio/helpers/1.0.5:
+    resolution: {integrity: sha512-TPpuAFHNxlCTrEihHnRKcq6zc0oZV0sfz5/iHoSpl5vorwPbwZWiF88JGeflNdefW4A69b5A3x3mfptKPdpoxg==}
+    dev: false
+
+  /@prismicio/richtext/1.1.0:
+    resolution: {integrity: sha512-925JuFiZiIkwu9jmlR9O/U8xCSZk/Y6BQDXKpavoVsKo+n90ml1hGdtWkglIupX+ITQO1ZINyDgUgiY1oG9dsA==}
+    dev: false
+
   /@rushstack/eslint-patch/1.1.0:
     resolution: {integrity: sha512-JLo+Y592QzIE+q7Dl2pMUtt4q8SKYI5jDrZxrozEQxnGVOyYE+GWK9eLkwTaeN9DDctlaRAQ3TBmzZ1qdLE30A==}
     dev: true
@@ -414,6 +426,10 @@ packages:
 
   /@types/node/16.11.7:
     resolution: {integrity: sha512-QB5D2sqfSjCmTuWcBWyJ+/44bcjO7VbjSbOE0ucoVbAsSNQc4Lt6QkgkVXkTDwkL4z/beecZNDvVX15D4P8Jbw==}
+
+  /@types/prismic-dom/2.1.1:
+    resolution: {integrity: sha512-gZSFBARo4vFnpclOq2DzU9t4wikVsZ0+lL4hXaRoeUJinhGSK+nMERcZJgXglK/+QRcw3HBPbGJzgzTqQGSuNw==}
+    dev: true
 
   /@types/prop-types/15.7.4:
     resolution: {integrity: sha512-rZ5drC/jWjrArrS8BR6SIr4cWpW09RNTYt9AMZo3Jwwif+iacXAqgVjm0B0Bv/S1jhDXKHqRVNCbACkJ89RAnQ==}
@@ -1337,6 +1353,10 @@ packages:
   /escalade/3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
     engines: {node: '>=6'}
+    dev: false
+
+  /escape-html/1.0.3:
+    resolution: {integrity: sha1-Aljq5NPQwJdN4cFpGI7wBR0dGYg=}
     dev: false
 
   /escape-string-regexp/1.0.5:
@@ -2857,6 +2877,14 @@ packages:
 
   /pretty-format/3.8.0:
     resolution: {integrity: sha1-v77VbV6ad2ZF9LH/eqGjrE+jw4U=}
+    dev: false
+
+  /prismic-dom/2.2.6:
+    resolution: {integrity: sha512-b4TDkfNisfRPGBpvUSuHIs3bfCFqc7k9Eek81LM5ReHB8OrzTxYqvC6IukLPVMdxpCGCwbOfNQX4ae+2T0hbrQ==}
+    dependencies:
+      '@prismicio/helpers': 1.0.5
+      '@prismicio/richtext': 1.1.0
+      escape-html: 1.0.3
     dev: false
 
   /process/0.11.10:
