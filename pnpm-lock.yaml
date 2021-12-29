@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@prismicio/client': ^5.1.0
   '@stripe/stripe-js': ^1.21.1
   '@types/node': ^16.11.7
   '@types/react': ^17.0.34
@@ -22,6 +23,7 @@ specifiers:
   typescript: ^4.4.4
 
 dependencies:
+  '@prismicio/client': 5.1.0
   '@stripe/stripe-js': 1.21.1
   axios: 0.24.0
   faunadb: 4.4.1
@@ -381,6 +383,13 @@ packages:
   /@panva/asn1.js/1.0.0:
     resolution: {integrity: sha512-UdkG3mLEqXgnlKsWanWcgb6dOjUzJ+XC5f+aWw30qrtjxeNUSfKX1cd5FBzOaXQumoe9nIqeZUvrRJS03HCCtw==}
     engines: {node: '>=10.13.0'}
+    dev: false
+
+  /@prismicio/client/5.1.0:
+    resolution: {integrity: sha512-LCb+arVVxJOoPM+8qfLCC/Dqse7mh+Q1k3oo5W5Uzu7vVO+vtc7CUYHxgCDkvekakYHc9407kwWu65ErZw+CPQ==}
+    engines: {node: '>=0.10.3'}
+    dependencies:
+      cross-fetch: 3.1.4
     dev: false
 
   /@rushstack/eslint-patch/1.1.0:
