@@ -7,7 +7,7 @@ import { getPrismicClient } from '../../services/prismic'
 
 import styles from './Posts.module.scss'
 type Post = {
-  slug: string
+  uid: string
   title: string
   summary: string
   updatedAt: string
@@ -25,7 +25,7 @@ export default function Posts({ posts }: PostsProps) {
       <main className={styles.container}>
         <div className={styles.posts}>
           {posts.map(post => (
-            <a href="#" key={post.slug}>
+            <a href="#" key={post.uid}>
               <time>{post.updatedAt}</time>
               <strong>{post.title}</strong>
               <p>{post.summary}</p>
@@ -37,7 +37,7 @@ export default function Posts({ posts }: PostsProps) {
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps<PostsProps> = async () => {
   const prismic = getPrismicClient()
 
   const response = await prismic.query(
@@ -45,17 +45,17 @@ export const getStaticProps: GetStaticProps = async () => {
     { fetch: ['title', 'content'], pageSize: 100 }
   )
 
-  const posts = response.results.map(post => {
-    return {
-      slug: post.uid,
+  const posts = response.results.map(
+    (post): Post => ({
+      uid: post.uid,
       title: RichText.asText(post.data.title),
       summary: post.data.content.find(c => c.type === 'paragraph')?.text ?? '',
       updatedAt: new Date(post.last_publication_date).toLocaleDateString(
         'pt-BR',
         { day: '2-digit', month: 'long', year: 'numeric' }
       ),
-    }
-  })
+    })
+  )
 
   return { props: { posts } }
 }
