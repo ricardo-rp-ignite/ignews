@@ -1,7 +1,9 @@
-import { query as q } from 'faunadb'
+import { Expr, query as q } from 'faunadb'
 
-export const userByEmail = (email: string) =>
-  q.Match(q.Index('user_by_email'), q.Casefold(email))
+export function userByEmail(userEmail: string): Expr {
+  return q.Match(q.Index('user_by_email'), q.Casefold(userEmail))
+}
 
-export const userByStripeCustomerId = (customerId: string) =>
-  q.Match(q.Index('user_by_stripe_customer_id'), customerId)
+export function userByStripeCustomerId(customerId: string): Expr {
+  return q.Match(q.Index('user_by_stripe_customer_id'), customerId)
+}
