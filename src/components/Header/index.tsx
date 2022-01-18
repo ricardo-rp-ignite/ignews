@@ -15,11 +15,7 @@ export function Header(): React.ReactElement {
             <a>Home</a>
           </HighlightableLink>
 
-          <HighlightableLink
-            href="/posts"
-            prefetch
-            activeClassName={styles.active}
-          >
+          <HighlightableLink href="/posts" activeClassName={styles.active}>
             <a>Posts</a>
           </HighlightableLink>
         </nav>
