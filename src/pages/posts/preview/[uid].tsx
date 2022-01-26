@@ -77,5 +77,8 @@ export const getStaticProps: GetStaticProps<PostProps, PostQuery> = async ({
     updatedAt: formatPostDate(response.last_publication_date),
   }
 
-  return { props: { post } }
+  return {
+    props: { post },
+    revalidate: 60 * 30, // 30 minutes
+  }
 }
