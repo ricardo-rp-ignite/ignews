@@ -2,11 +2,14 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import { RichText } from 'prismic-dom'
 import Link from 'next/link'
+import { useSession } from 'next-auth/client'
 
 import { getPrismicClient } from '../../../services/prismic'
 import { formatPostDate } from '../../../utils/formatPostDate'
 
 import styles from '../Post.module.scss'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 type PostQuery = { uid: string }
 type PostProps = {
@@ -19,8 +22,15 @@ type PostProps = {
 }
 
 export default function Post({
-  post: { title, updatedAt, content },
+  post: { uid, title, updatedAt, content },
 }: PostProps) {
+  const [session] = useSession()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (session?.activeSubscription) router.push(`/posts/${uid}`)
+  }, [router, session, uid])
+
   return (
     <>
       <Head>
